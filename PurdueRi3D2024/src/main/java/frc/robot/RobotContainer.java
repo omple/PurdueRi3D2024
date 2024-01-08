@@ -10,8 +10,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.FullIntake;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.MoveClimb;
+import frc.robot.commands.MoveWrist;
 import frc.robot.commands.PowerPivot;
 import frc.robot.commands.ShootTorus;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -31,6 +34,7 @@ public class RobotContainer {
   ShooterSubsystem shooter;
   IntakeSubsystem intake;
   PivotSubsystem pivot;
+  ClimbSubsystem climb;
   public RobotContainer() {
     this.driver = new XboxController(0);
     this.operator = new XboxController(1);
@@ -38,6 +42,7 @@ public class RobotContainer {
     this.shooter = new ShooterSubsystem(5,6);
     this.intake = new IntakeSubsystem(7, 8);
     this.pivot = new PivotSubsystem(9, 10);
+    this.climb = new ClimbSubsystem(11, 12);
     
     // Configure the trigger bindings
     configureBindings();
@@ -48,10 +53,16 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, () -> driver.getLeftY(), () -> driver.getRightX()));
     
     // change this number to change the shooting speed, press button to shoot
-    new JoystickButton(this.operator, 5).whileTrue(new ShootTorus(shooter, () -> operator.getLeftX()));
+    new JoystickButton(this.operator, XboxController.Button.kA.value).whileTrue(new ShootTorus(shooter, () -> operator.getLeftX()));
 
     // will power arm up and down with power
-    new JoystickButton(this.operator, 6).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
+    new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
+
+    // pivot the wrist
+    new JoystickButton(this.operator, XboxController.Button.kX.value).whileTrue(new MoveWrist(intake, () -> operator.getLeftX()));
+
+    // climb robot
+    new JoystickButton(this.operator, XboxController.Button.kLeftBumper.value).whileTrue(new MoveClimb(climb, () -> operator.getLeftY(), () -> operator.getRightY()));
 
     // this is the operator triggers, runs all the intake motors
     new Trigger(() -> Math.abs(operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (operator.getRightTriggerAxis() - operator.getLeftTriggerAxis())));
