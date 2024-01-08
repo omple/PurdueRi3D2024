@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -12,11 +14,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  VictorSP feeder;
+  VictorSPX feeder;
   CANSparkMax shooter;
   public ShooterSubsystem(int shooterMotorID, int feederID) {
     this.shooter = new CANSparkMax(shooterMotorID, MotorType.kBrushless);
-    this.feeder = new VictorSP(feederID);
+    this.feeder = new VictorSPX(feederID);
     this.shooter.setInverted(false);
     this.feeder.setInverted(false);
   }
@@ -26,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setFeeder(double speed){
-    feeder.set(speed);
+    feeder.set(ControlMode.PercentOutput, speed);
   }
 
   @Override

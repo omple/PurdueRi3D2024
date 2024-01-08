@@ -14,22 +14,32 @@ public class ShootTorus extends Command {
   /** Creates a new ShootTorus. */
   ShooterSubsystem shooterSubsystem;
   DoubleSupplier pow;
-  public ShootTorus(ShooterSubsystem shooterSubsystem, DoubleSupplier pow) {
+  BooleanSupplier readyToShoot;
+  public ShootTorus(ShooterSubsystem shooterSubsystem, DoubleSupplier pow, BooleanSupplier readyToShoot) {
     this.shooterSubsystem = shooterSubsystem;
     this.pow = pow;
+    this.readyToShoot = readyToShoot;
     addRequirements(shooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    shooterSubsystem.setShooter(0);
+    shooterSubsystem.setFeeder(0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     shooterSubsystem.setShooter(pow.getAsDouble());
-    shooterSubsystem.setFeeder(0.5);
+
+    if(readyToShoot.getAsBoolean()){
+      System.out.print(readyToShoot.getAsBoolean());
+      shooterSubsystem.setFeeder(1);
+    }
+      
   }
 
   // Called once the command ends or is interrupted.

@@ -50,10 +50,10 @@ public class RobotContainer {
 
   private void configureBindings() {
     // driving command
-    driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, () -> driver.getLeftY(), () -> driver.getRightX()));
+    driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, () -> -driver.getLeftY(), () -> driver.getRightX()));
     
     // change this number to change the shooting speed, press button to shoot
-    new JoystickButton(this.operator, XboxController.Button.kA.value).whileTrue(new ShootTorus(shooter, () -> operator.getLeftX()));
+    new JoystickButton(this.operator, XboxController.Button.kA.value).whileTrue(new ShootTorus(shooter, () -> 1, () -> operator.getYButton()));
 
     // will power arm up and down with power
     //new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
@@ -62,7 +62,7 @@ public class RobotContainer {
     new JoystickButton(this.operator, XboxController.Button.kX.value).whileTrue(new MoveWrist(intake, () -> operator.getLeftX()));
 
     // climb robot
-    //new JoystickButton(this.operator, XboxController.Button.kLeftBumper.value).whileTrue(new MoveClimb(climb, () -> operator.getLeftY(), () -> operator.getRightY()));
+    //new JoystickButton(this.operator, XboxController.Button.kRightBumper.value).whileTrue(new MoveClimb(climb, () -> -operator.getLeftY(), () -> -operator.getRightY()));
 
     // this is the operator triggers, runs all the intake motors
     new Trigger(() -> Math.abs(operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (operator.getRightTriggerAxis() - operator.getLeftTriggerAxis())));

@@ -31,8 +31,8 @@ public class FullIntake extends Command {
   @Override
   public void execute() {
     intakeSubsystem.setIntake(pow.getAsDouble());
-    shooterSubsystem.setFeeder(pow.getAsDouble());
-    shooterSubsystem.setShooter(pow.getAsDouble());
+    shooterSubsystem.setFeeder(pow.getAsDouble() * .5);
+    shooterSubsystem.setShooter(pow.getAsDouble() * .5);
   }
 
   // Called once the command ends or is interrupted.

@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -13,25 +16,25 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
   DifferentialDrive tank;
-
+  VictorSPX frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor;
   public DriveTrain(int frontLeft, int backLeft, int frontRight, int backRight) {
-    VictorSP frontLeftMotor = new VictorSP(frontLeft);
-    VictorSP backLeftMotor = new VictorSP(backLeft);
+    frontLeftMotor = new VictorSPX(frontLeft);
+    backLeftMotor = new VictorSPX(backLeft);
     frontLeftMotor.setInverted(false);
     backLeftMotor.setInverted(false);
-    frontLeftMotor.addFollower(backLeftMotor);
+    backLeftMotor.follow(frontLeftMotor);
 
-    VictorSP frontRightMotor = new VictorSP(frontRight);
-    VictorSP backRightMotor = new VictorSP(backRight);
+    frontRightMotor = new VictorSPX(frontRight);
+    backRightMotor = new VictorSPX(backRight);
     frontRightMotor.setInverted(false);
     backRightMotor.setInverted(false);
-    frontRightMotor.addFollower(backRightMotor);
+    backRightMotor.follow(frontRightMotor);
 
-    tank = new DifferentialDrive(frontLeftMotor, frontRightMotor);
   }
 
   public void drive(double forward, double turn){
-    tank.arcadeDrive(forward, turn, true);
+    frontLeftMotor.set(ControlMode.PercentOutput, forward + turn);
+    frontRightMotor.set(ControlMode.PercentOutput, forward - turn);
   }
 
   @Override

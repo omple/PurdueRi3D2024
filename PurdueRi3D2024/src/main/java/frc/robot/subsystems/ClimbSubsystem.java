@@ -4,25 +4,26 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSubsystem extends SubsystemBase {
   /** Creates a new ClimbSubsystem. */
-  VictorSP left, right;
-  
+  VictorSPX left, right;
+
   public ClimbSubsystem(int leftID, int rightID) {
-    left = new VictorSP(leftID);
-    right = new VictorSP(rightID);
+    left = new VictorSPX(leftID);
+    right = new VictorSPX(rightID);
     left.setInverted(false);
     right.setInverted(false);
     
   }
 
   public void setClimb(double leftPow, double rightPow){
-    left.set(leftPow);
-    right.set(rightPow);
+    left.set(ControlMode.PercentOutput, leftPow);
+    right.set(ControlMode.PercentOutput, rightPow);
   }
   
   @Override

@@ -4,26 +4,27 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  VictorSP intake;
+  VictorSPX intake;
   CANSparkMax wrist;
 
   public IntakeSubsystem(int intakeID, int wristID) {
-    this.intake = new VictorSP(intakeID);
+    this.intake = new VictorSPX(intakeID);
     this.wrist = new CANSparkMax(wristID, MotorType.kBrushless);
     this.intake.setInverted(false);
-    this.wrist.setInverted(false);
+    this.wrist.setInverted(true);
   }
 
   public void setIntake(double speed){
-    intake.set(speed);
+    intake.set(ControlMode.PercentOutput, speed);
   }
 
   public void setWrist(double speed){
