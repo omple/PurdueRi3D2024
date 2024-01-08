@@ -4,20 +4,18 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.JoystickDrive;
-import frc.robot.commands.ShootTorus;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.FullIntake;
+import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.PowerPivot;
+import frc.robot.commands.ShootTorus;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,22 +26,35 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  DriveTrain driveTrain;
   XboxController driver, operator;
+  DriveTrain driveTrain;
   ShooterSubsystem shooter;
+  IntakeSubsystem intake;
+  PivotSubsystem pivot;
   public RobotContainer() {
     this.driver = new XboxController(0);
     this.operator = new XboxController(1);
     this.driveTrain = new DriveTrain(1, 2, 3, 4);
     this.shooter = new ShooterSubsystem(5,6);
+    this.intake = new IntakeSubsystem(7, 8);
+    this.pivot = new PivotSubsystem(9, 10);
     
     // Configure the trigger bindings
     configureBindings();
   }
 
   private void configureBindings() {
+    // driving command
     driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, () -> driver.getLeftY(), () -> driver.getRightX()));
+    
+    // change this number to change the shooting speed, press button to shoot
     new JoystickButton(this.operator, 5).whileTrue(new ShootTorus(shooter, () -> operator.getLeftX()));
+
+    // will power arm up and down with power
+    new JoystickButton(this.operator, 6).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
+
+    // this is the operator triggers, runs all the intake motors
+    new Trigger(() -> Math.abs(operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (operator.getRightTriggerAxis() - operator.getLeftTriggerAxis())));
   }
 
   /**

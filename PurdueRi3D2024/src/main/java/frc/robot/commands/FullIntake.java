@@ -4,21 +4,23 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootTorus extends Command {
-  /** Creates a new ShootTorus. */
+public class FullIntake extends Command {
+  /** Creates a new FullIntake. */
+  IntakeSubsystem intakeSubsystem;
   ShooterSubsystem shooterSubsystem;
   DoubleSupplier pow;
-  public ShootTorus(ShooterSubsystem shooterSubsystem, DoubleSupplier pow) {
+  public FullIntake(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, DoubleSupplier pow) {
+    this.intakeSubsystem = intakeSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.pow = pow;
-    addRequirements(shooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intakeSubsystem,shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -28,15 +30,17 @@ public class ShootTorus extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    intakeSubsystem.setIntake(pow.getAsDouble());
+    shooterSubsystem.setFeeder(pow.getAsDouble());
     shooterSubsystem.setShooter(pow.getAsDouble());
-    shooterSubsystem.setFeeder(0.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.setShooter(0);
+    intakeSubsystem.setIntake(0);
     shooterSubsystem.setFeeder(0);
+    shooterSubsystem.setShooter(0);
   }
 
   // Returns true when the command should end.

@@ -13,14 +13,15 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem(int shooterMotorID, int feederID) {
     this.shooter = new VictorSP(shooterMotorID);
     this.feeder = new VictorSP(feederID);
-
+    this.shooter.setInverted(false);
+    this.feeder.setInverted(false);
   }
 
-  public void setShooterSpeed(double speed){
+  public void setShooter(double speed){
     shooter.set(speed);
   }
 
-  public void setFeederSpeed(double speed){
+  public void setFeeder(double speed){
     feeder.set(speed);
   }
 

@@ -4,20 +4,18 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 
-public class ShootTorus extends Command {
-  /** Creates a new ShootTorus. */
-  ShooterSubsystem shooterSubsystem;
+public class PowerPivot extends Command {
+  /** Creates a new PowerPivot. */
+  PivotSubsystem pivotSubsystem;
   DoubleSupplier pow;
-  public ShootTorus(ShooterSubsystem shooterSubsystem, DoubleSupplier pow) {
-    this.shooterSubsystem = shooterSubsystem;
+  public PowerPivot(PivotSubsystem pivotSubsystem, DoubleSupplier pow) {
+    this.pivotSubsystem = pivotSubsystem;
     this.pow = pow;
-    addRequirements(shooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,15 +26,13 @@ public class ShootTorus extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.setShooter(pow.getAsDouble());
-    shooterSubsystem.setFeeder(0.5);
+    pivotSubsystem.setPivot(pow.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.setShooter(0);
-    shooterSubsystem.setFeeder(0);
+    pivotSubsystem.setPivot(0);
   }
 
   // Returns true when the command should end.

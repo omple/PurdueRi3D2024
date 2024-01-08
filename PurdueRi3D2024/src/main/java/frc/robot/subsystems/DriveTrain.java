@@ -17,10 +17,14 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain(int frontLeft, int backLeft, int frontRight, int backRight) {
     VictorSP frontLeftMotor = new VictorSP(frontLeft);
     VictorSP backLeftMotor = new VictorSP(backLeft);
+    frontLeftMotor.setInverted(false);
+    backLeftMotor.setInverted(false);
     frontLeftMotor.addFollower(backLeftMotor);
 
     VictorSP frontRightMotor = new VictorSP(frontRight);
     VictorSP backRightMotor = new VictorSP(backRight);
+    frontRightMotor.setInverted(false);
+    backRightMotor.setInverted(false);
     frontRightMotor.addFollower(backRightMotor);
 
     tank = new DifferentialDrive(frontLeftMotor, frontRightMotor);
