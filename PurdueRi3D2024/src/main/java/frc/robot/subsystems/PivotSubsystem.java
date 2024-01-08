@@ -4,11 +4,26 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PivotSubsystem extends SubsystemBase {
   /** Creates a new PivotSubsystem. */
-  public PivotSubsystem() {}
+  VictorSP pivotLeft;
+  VictorSP pivotRight;
+
+  public PivotSubsystem(int pivotLeftID, int pivotRightID) {
+    this.pivotLeft = new VictorSP(pivotLeftID);
+    this.pivotRight = new VictorSP(pivotRightID);
+    this.pivotLeft.setInverted(false);
+    this.pivotRight.setInverted(false);
+    
+    this.pivotLeft.addFollower(this.pivotRight);
+  }
+
+  public void setPivot(double speed) {
+    this.pivotLeft.set(speed);
+  }
 
   @Override
   public void periodic() {
