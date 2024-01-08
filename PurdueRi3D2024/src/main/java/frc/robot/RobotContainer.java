@@ -38,11 +38,11 @@ public class RobotContainer {
   public RobotContainer() {
     this.driver = new XboxController(0);
     this.operator = new XboxController(1);
-    this.driveTrain = new DriveTrain(1, 2, 3, 4);
-    this.shooter = new ShooterSubsystem(5,6);
-    this.intake = new IntakeSubsystem(7, 8);
-    this.pivot = new PivotSubsystem(9, 10);
-    this.climb = new ClimbSubsystem(11, 12);
+    this.driveTrain = new DriveTrain(2, 5, 9, 10);
+    this.shooter = new ShooterSubsystem(4,8);
+    this.intake = new IntakeSubsystem(7, 3);
+    this.pivot = new PivotSubsystem(1, 11);
+    this.climb = new ClimbSubsystem(12, 6);
     
     // Configure the trigger bindings
     configureBindings();
@@ -56,13 +56,13 @@ public class RobotContainer {
     new JoystickButton(this.operator, XboxController.Button.kA.value).whileTrue(new ShootTorus(shooter, () -> operator.getLeftX()));
 
     // will power arm up and down with power
-    new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
+    //new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
 
     // pivot the wrist
     new JoystickButton(this.operator, XboxController.Button.kX.value).whileTrue(new MoveWrist(intake, () -> operator.getLeftX()));
 
     // climb robot
-    new JoystickButton(this.operator, XboxController.Button.kLeftBumper.value).whileTrue(new MoveClimb(climb, () -> operator.getLeftY(), () -> operator.getRightY()));
+    //new JoystickButton(this.operator, XboxController.Button.kLeftBumper.value).whileTrue(new MoveClimb(climb, () -> operator.getLeftY(), () -> operator.getRightY()));
 
     // this is the operator triggers, runs all the intake motors
     new Trigger(() -> Math.abs(operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (operator.getRightTriggerAxis() - operator.getLeftTriggerAxis())));

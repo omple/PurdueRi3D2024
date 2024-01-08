@@ -4,14 +4,18 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  VictorSP shooter, feeder;
+  VictorSP feeder;
+  CANSparkMax shooter;
   public ShooterSubsystem(int shooterMotorID, int feederID) {
-    this.shooter = new VictorSP(shooterMotorID);
+    this.shooter = new CANSparkMax(shooterMotorID, MotorType.kBrushless);
     this.feeder = new VictorSP(feederID);
     this.shooter.setInverted(false);
     this.feeder.setInverted(false);
