@@ -56,7 +56,7 @@ public class RobotContainer {
     new JoystickButton(this.operator, XboxController.Button.kA.value).whileTrue(new ShootTorus(shooter, () -> 1, () -> operator.getYButton()));
 
     // will power arm up and down with power
-    //new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
+    new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
 
     // pivot the wrist
     new JoystickButton(this.operator, XboxController.Button.kX.value).whileTrue(new MoveWrist(intake, () -> operator.getLeftX()));
