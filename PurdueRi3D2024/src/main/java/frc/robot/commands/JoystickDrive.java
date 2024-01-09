@@ -30,8 +30,8 @@ public class JoystickDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double forward = forwardPow.getAsDouble();
-    double turn = turnPow.getAsDouble();
+    double forward = Math.pow(forwardPow.getAsDouble(),3);
+    double turn = Math.pow(turnPow.getAsDouble(), 3) * .70;
     if(Math.abs(forward) < 0.05){
       forward = 0;
     }

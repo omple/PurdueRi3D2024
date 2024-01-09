@@ -40,7 +40,7 @@ public class RobotContainer {
     this.driver = new XboxController(0);
     this.operator = new XboxController(1);
     this.driveTrain = new DriveTrain(2, 5, 9, 10);
-    this.shooter = new ShooterSubsystem(4,8);
+    this.shooter = new ShooterSubsystem(4,8, 13);
     this.intake = new IntakeSubsystem(7, 3);
     this.pivot = new PivotSubsystem(1, 11);
     this.climb = new ClimbSubsystem(12, 6);

@@ -14,17 +14,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  VictorSPX feeder;
+  VictorSPX feeder, shooter2;
   CANSparkMax shooter;
-  public ShooterSubsystem(int shooterMotorID, int feederID) {
+  public ShooterSubsystem(int shooterMotorID, int feederID, int shooter2ID) {
     this.shooter = new CANSparkMax(shooterMotorID, MotorType.kBrushless);
+    this.shooter2 = new VictorSPX(shooter2ID);
     this.feeder = new VictorSPX(feederID);
     this.shooter.setInverted(false);
     this.feeder.setInverted(false);
+    this.shooter2.setInverted(false);
   }
 
   public void setShooter(double speed){
     shooter.set(speed);
+    shooter2.set(ControlMode.PercentOutput, speed);
   }
 
   public void setFeeder(double speed){
