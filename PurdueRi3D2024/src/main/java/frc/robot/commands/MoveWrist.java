@@ -28,7 +28,7 @@ public class MoveWrist extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.setWrist(pow.getAsDouble() * .25);
+    intakeSubsystem.setWrist(pow.getAsDouble() * .1);
   }
 
   // Called once the command ends or is interrupted.

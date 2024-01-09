@@ -24,15 +24,20 @@ public class DriveTrain extends SubsystemBase {
 
     frontRightMotor = new VictorSPX(frontRight);
     backRightMotor = new VictorSPX(backRight);
-    frontRightMotor.setInverted(false);
-    backRightMotor.setInverted(false);
+    frontRightMotor.setInverted(true);
+    backRightMotor.setInverted(true);
     backRightMotor.follow(frontRightMotor);
 
   }
 
   public void drive(double forward, double turn){
-    frontLeftMotor.set(ControlMode.PercentOutput, forward + turn);
-    frontRightMotor.set(ControlMode.PercentOutput, forward - turn);
+    frontLeftMotor.set(ControlMode.PercentOutput, limit(forward + turn));
+    frontRightMotor.set(ControlMode.PercentOutput, limit(forward - turn));
+    //how do the motors deal with acceleration? if we dont limit the acceleration we might have issues. just my two cents -BJT
+  }
+
+  public double limit(double val){
+    return Math.min(Math.max(val, -1), 1);
   }
 
   @Override

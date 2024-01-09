@@ -17,7 +17,7 @@ public class PivotSubsystem extends SubsystemBase {
   public PivotSubsystem(int pivot1ID, int pivot2ID) {
     pivot1 = new VictorSPX(pivot1ID);
     pivot2 = new VictorSPX(pivot2ID);
-    pivot1.setInverted(false);
+    pivot1.setInverted(true);
     pivot2.setInverted(false);
 
     pivot2.follow(pivot1);
@@ -30,5 +30,6 @@ public class PivotSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //maybe add speeds and such to shuffleboard? Not necessary, but just in case we want it to feel better it might help idk -BJT
   }
 }

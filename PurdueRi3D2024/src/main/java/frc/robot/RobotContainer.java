@@ -36,6 +36,7 @@ public class RobotContainer {
   PivotSubsystem pivot;
   ClimbSubsystem climb;
   public RobotContainer() {
+    //not necessary at all but setting ports to constants makes it moderately easier? this is ro3d tho, might not be necessary -BJT
     this.driver = new XboxController(0);
     this.operator = new XboxController(1);
     this.driveTrain = new DriveTrain(2, 5, 9, 10);
@@ -62,7 +63,7 @@ public class RobotContainer {
     new JoystickButton(this.operator, XboxController.Button.kX.value).whileTrue(new MoveWrist(intake, () -> operator.getLeftX()));
 
     // climb robot
-    //new JoystickButton(this.operator, XboxController.Button.kRightBumper.value).whileTrue(new MoveClimb(climb, () -> -operator.getLeftY(), () -> -operator.getRightY()));
+    new JoystickButton(this.operator, XboxController.Button.kRightBumper.value).whileTrue(new MoveClimb(climb, () -> -operator.getLeftY(), () -> -operator.getRightY()));
 
     // this is the operator triggers, runs all the intake motors
     new Trigger(() -> Math.abs(operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (operator.getRightTriggerAxis() - operator.getLeftTriggerAxis())));
@@ -75,6 +76,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // returning null, hopefull won't crash
+    // it likely will, null references tend to piss off roborio. returning a blank one might be better -BJT
     return null;
   }
 }

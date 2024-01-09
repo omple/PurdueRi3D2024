@@ -59,7 +59,8 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null) { 
+      //i mean if null gets pissy we *could* change this to something else - BJT
       m_autonomousCommand.schedule();
     }
   }
