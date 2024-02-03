@@ -54,19 +54,25 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, () -> -driver.getLeftY(), () -> driver.getRightX()));
     
     // change this number to change the shooting speed, press button to shoot
-    new JoystickButton(this.operator, XboxController.Button.kA.value).whileTrue(new ShootTorus(shooter, () -> 1, () -> operator.getYButton()));
+    new JoystickButton(this.operator, XboxController.Button.kLeftBumper.value).whileTrue(new ShootTorus(shooter, () -> 1, () -> operator.getRightBumper()));
 
     // will power arm up and down with power
-    new JoystickButton(this.operator, XboxController.Button.kB.value).whileTrue(new PowerPivot(pivot, () -> operator.getLeftX()));
+    new Trigger(() -> Math.abs(operator.getLeftX()) > 0.1).whileTrue(new PowerPivot(pivot, () -> 0.5 * operator.getLeftX()));
 
     // pivot the wrist
-    new JoystickButton(this.operator, XboxController.Button.kX.value).whileTrue(new MoveWrist(intake, () -> operator.getLeftX()));
+    new Trigger(() -> Math.abs(operator.getRightX()) > 0.1).whileTrue(new MoveWrist(intake, () -> 0.3 * operator.getLeftX()));
 
     // climb robot
-    new JoystickButton(this.operator, XboxController.Button.kRightBumper.value).whileTrue(new MoveClimb(climb, () -> -operator.getLeftY(), () -> -operator.getRightY()));
+    new JoystickButton(this.driver, XboxController.Button.kStart.value).whileTrue(
+      new MoveClimb(
+        climb,
+        () -> operator.getYButton() ? .75 : operator.getXButton() ? -0.75: 0,
+        () -> operator.getBButton() ? .75 : operator.getAButton() ? -0.75: 0
+      )
+    );
 
     // this is the operator triggers, runs all the intake motors
-    new Trigger(() -> Math.abs(operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (operator.getRightTriggerAxis() - operator.getLeftTriggerAxis())));
+    new Trigger(() -> Math.abs(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()) > 0.1).whileTrue(new FullIntake(intake, shooter, () -> (driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())));
   }
 
   /**
